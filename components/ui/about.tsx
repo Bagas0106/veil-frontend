@@ -19,10 +19,13 @@ const explanation = [
 
 export default function About(){
     return(
-        <div className="grid grid-cols-[1fr_1.7fr] content-center ">
-            <div className="flex flex-col gap-14 pl-8">
+        <div className="min-h-screen grid grid-cols-[1fr_1.7fr] content-center ">
+            <div className="flex flex-col gap-14">
                 {explanation.map((ex) => (
-                    <div className="space-y-4">
+                    <div 
+                        key={ex.title}
+                        className="space-y-4"
+                    >
                         <h1 className="font-bold text-3xl text-[#EBB2FF] tracking-tight flex items-center gap-2"> {ex.icon}{ex.title}</h1>
                         <p className="font-mono text-white">{ex.subtitle}</p>
                         <p className="text-white font-inter max-w-md">{ex.description}</p>
@@ -52,22 +55,22 @@ export default function About(){
                         <p className="text-[#EBB2FF]">DISENROR</p>
                     </div>
                 </div>
-                <div className="border-2 p-8 w-120 h-62 rounded-lg rotate-7 space-y-2 absolute right-50 top-45 space-y-6">
+                <div className="border-2 p-8 w-140 h-70 rounded-lg rotate-7 space-y-2 absolute right-7 top-47 space-y-6">
                     <div className="flex gap-4 w-full">
-                        <div className="w-30 h-33 border-2 border-dashed border-[#EBB2FF]/60 rounded-lg flex items-center justify-center"></div>
-                        <div className="space-y-4">
-                            <div className="w-75">
+                        <div className="w-40 h-40 border-2 border-dashed border-[#EBB2FF]/60 rounded-lg flex items-center justify-center"><User2 size={100} strokeWidth={0.5}></User2></div>
+                        <div className="space-y-4 w-full">
+                            <div className="w-full">
                                 <div className="h-3.5 w-full bg-[#C8C4D7]/50 rounded-sm "></div>
                             </div>
-                            <div className="flex gap-2 w-75">
+                            <div className="flex gap-2 w-full">
                                 <div className="h-3.5 w-full bg-[#C8C4D7]/50 rounded-sm"></div>
                                 <div className="h-3.5 w-full bg-[#C8C4D7]/50 rounded-sm"></div>
                             </div>
-                            <div className="flex gap-2 w-75">
+                            <div className="flex gap-2 w-full">
                                 <div className="h-3.5 w-full bg-[#C8C4D7]/50 rounded-sm"></div>
                                 <div className="h-3.5 w-full bg-[#C8C4D7]/50 rounded-sm"></div>
                             </div>
-                            <div className="grid grid-cols-[1fr_2.7fr] gap-2 w-75">
+                            <div className="grid grid-cols-[1fr_2.7fr] gap-2 w-full">
                                 <div className="h-3.5 w-full bg-[#C8C4D7]/50 rounded-sm"></div>
                                 <div className="h-3.5 w-full bg-[#C8C4D7]/50 rounded-sm"></div>
                             </div>
