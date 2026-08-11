@@ -20,7 +20,11 @@ export default function Preview(){
     const [selectedImages, setSelectedImages] = useState(images[0]);
 
     return(
-        <div className="flex flex-col justify-center items-center gap-8 overflow-hidden">
+        <div className="flex flex-col justify-center items-center gap-8 overflow-hidden ">
+            <div className="flex flex-col justify-center items-center gap-2">
+                <h1 className="font-heading font-bold bg-[linear-gradient(to_bottom,#EAE8F0_0%,#EAE8F0_51%,#7B7B7B_100%)] bg-clip-text text-transparent text-5xl">Proteksi Identitas Visual </h1>
+                <p className=" text-[#C6C6C6] font-inter text-center">Amankan setiap detail foto dari kebocoran data. Sensoring presisi untuk dokumen resmi, identitas <br /> diri, dan area rawan privasi lainnya.</p>
+            </div>
             <div className="w-full max-w-5xl mx-auto border border-[#EBB2FF]/50 p-4 rounded-xl flex flex-col gap-4">
                 <div className="flex gap-1.5 shrink-0">
                     <div className="w-3 h-3 rounded-full bg-[#EBB2FF]"></div>
@@ -42,16 +46,18 @@ export default function Preview(){
                     }}
                 >
                     {infiniteImage.map((img,index) => (
+                        <div className="border bg-[#1C1424] border-[#EBB2FF]/20 rounded-xl p-3">
                         <div
                             key={index}
                             onClick={() => setSelectedImages(img)}
-                            className={`shrink-0 cursor-pointer rounded-xl overflow-hidden border-2 transition-all duration-300 ${
+                            className={`shrink-0 cursor-pointer rounded-xl overflow-hidden transition-all duration-300 ${
                                 selectedImages === img
-                                ? "border-[#EBB2FF] opacity-100 scale-105"
+                                ? "opacity-100 scale-103"
                                 : "border-transparent opacity-50 hover:opacity-100"
                             }`}
                         >
                             <img src={img} alt="Thumbnail" className="w-[280px] h-[160px] object-cover" />
+                        </div>
                         </div>
                     ))}
                 </motion.div>

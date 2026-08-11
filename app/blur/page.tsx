@@ -1,5 +1,5 @@
-import Setting from "@/components/ui/setting"
-import Upload from "@/components/ui/upload"
+import Setting from "@/components/ui/Upload page/setting"
+import Upload from "@/components/ui/Upload page/upload"
 import { ShieldCheck } from "lucide-react"
 
 export default function BlurPage(){

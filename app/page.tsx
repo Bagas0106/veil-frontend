@@ -1,19 +1,22 @@
-import Image from "next/image";
-import Hero from "@/components/ui/hero";
-import About from "@/components/ui/about";
-import Preview from "@/components/ui/preview";
+import Hero from "@/components/ui/Landing Page/hero";
+import About from "@/components/ui/Landing Page/about";
+import Preview from "@/components/ui/Landing Page/preview";
+import Explanation from "@/components/ui/Landing Page/explanation";
+import Next from "@/components/ui/Landing Page/next";
 
 export default function Home() {
   return (
-    <main className="bg-[#19101C]">
-        <div className="bg-gradient-to-b from-[#f4ebff] via-[#a621ff] to-[#19101C] min-h-screen">
+    <main className="bg-[#000000]">
+        <div className="bg-gradient-to-b from-[#f4ebff] via-[#f4ebff] to-[#a621ff] min-h-screen">
           <div className="max-w-[85rem] mx-auto">
             <Hero/>
           </div>
-        </div>
+        </div>s
         <div className="text-white max-w-[85rem] mx-auto">
-          <About/>
           <Preview/>
+          <About/>
+          <Explanation/>
+          <Next/>
         </div>
     </main>
     

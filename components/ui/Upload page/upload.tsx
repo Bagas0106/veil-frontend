@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useRef ,useState } from "react"
-import { Button } from "./button"
+import { Button } from "../button"
 import { CloudUpload , Camera} from "lucide-react"
 
 export default function Upload(){

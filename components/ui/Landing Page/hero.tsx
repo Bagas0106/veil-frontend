@@ -1,4 +1,4 @@
-import { Button } from "./button"
+import { Button } from "../button"
 import { ArrowRightIcon } from "lucide-react"
 import Link from "next/link"
 
