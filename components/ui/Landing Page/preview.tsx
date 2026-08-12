@@ -20,7 +20,7 @@ export default function Preview(){
     const [selectedImages, setSelectedImages] = useState(images[0]);
 
     return(
-        <div className="flex flex-col justify-center items-center gap-6 md:gap-8 overflow-hidden w-full">
+        <div className="flex flex-col justify-center items-center gap-6 md:gap-8 overflow-hidden w-full " id="preview">
             <div className="flex flex-col justify-center items-center gap-2 px-2">
                 <h1 className="font-heading font-bold bg-[linear-gradient(to_bottom,#EAE8F0_0%,#EAE8F0_51%,#7B7B7B_100%)] bg-clip-text text-transparent text-3xl sm:text-4xl md:text-5xl text-center">Proteksi Identitas Visual </h1>
                 <p className=" text-[#C6C6C6] font-inter text-center text-sm md:text-base">Amankan setiap detail foto dari kebocoran data. Sensoring presisi untuk dokumen resmi, identitas <br className="hidden md:block"/> diri, dan area rawan privasi lainnya.</p>

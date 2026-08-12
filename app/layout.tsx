@@ -37,7 +37,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${JetBrainsMono.variable} ${interSans.variable} h-full subpixel-antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${JetBrainsMono.variable} ${interSans.variable} h-full subpixel-antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col overflow-x-hidden">
         <Navbar/>

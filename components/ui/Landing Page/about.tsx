@@ -3,7 +3,7 @@ import Image from "next/image"
 export default function About(){
 
     return(
-        <div className="w-full">
+        <div className="w-full" id="about">
             <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start gap-12 lg:gap-0">
                 <div className="flex flex-col w-full lg:w-auto text-center lg:text-left">
                     <div className="space-y-10 lg:space-y-14">
