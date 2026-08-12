@@ -11,7 +11,7 @@ export default function Home() {
           <div className="max-w-[85rem] mx-auto">
             <Hero/>
           </div>
-        </div>s
+        </div>
         <div className="text-white max-w-[85rem] mx-auto">
           <Preview/>
           <About/>

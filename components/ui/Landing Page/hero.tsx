@@ -13,7 +13,9 @@ export default function Hero(){
                 <Link href="/blur">
                     <Button className="bg-[#1C0020] hover:bg-[#1C0020] py-6.5 px-6 rounded-sm font-inter">Unggah & Sensor Foto <ArrowRightIcon/></Button>
                 </Link>
-                <Button className="bg-[#EAE8F0] hover:bg-[#EAE8F1] py-6.5 px-6 rounded-sm font-inter text-[#181524]">View Documentation</Button>
+                <Link href="/docs/pengantar">
+                    <Button className="bg-[#EAE8F0] hover:bg-[#EAE8F1] py-6.5 px-6 rounded-sm font-inter text-[#181524]">View Documentation</Button>
+                </Link>
             </div>
         </div>
     )
