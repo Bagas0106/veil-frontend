@@ -121,7 +121,6 @@ export default function Upload({ preview, setPreview, isProcessing, setIsProcess
                                 <Loader2 className="animate-spin text-white" size={40} strokeWidth={1.5} />
                                 <div className="space-y-1 text-center">
                                     <p className="font-medium text-lg animate-pulse tracking-tight text-white">Memproses Privasi</p>
-                                    <p className="text-sm text-zinc-500 tracking-tight">AI sedang mendeteksi area sensitif</p>
                                 </div>
                             </div>
                         )}
@@ -198,11 +197,11 @@ export default function Upload({ preview, setPreview, isProcessing, setIsProcess
                     }`}
                 >
                     <div className="flex gap-6">
-                        <div className="bg-zinc-900 text-white p-5 border border-zinc-800 rounded-lg">
-                            <CloudUpload size={40} strokeWidth={1}/>
+                        <div className="bg-zinc-900 p-5 border border-zinc-800 rounded-lg">
+                            <CloudUpload size={40} strokeWidth={1.5} className="text-[#EBB2FF]"/>
                         </div>
-                        <div className="bg-zinc-900 text-white p-5 border border-zinc-800 rounded-lg">
-                            <Camera size={40} strokeWidth={1}/>
+                        <div className="bg-zinc-900 p-5 border border-zinc-800 rounded-lg">
+                            <Camera size={40} strokeWidth={1.5} className="text-[#EBB2FF]"/>
                         </div>
                     </div>
                     <div className="text-center space-y-2">

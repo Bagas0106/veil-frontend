@@ -48,9 +48,9 @@ export default function BlurPage(){
                 </div>
                 
                 <div className="flex gap-4">
-                    <div className="bg-white w-1 rounded-full"></div>
+                    <div className="bg-[#EBB2FF] w-1 rounded-full"></div>
                     <div className="py-1">
-                        <ShieldCheck className="text-white" size={24} strokeWidth={1.5}/>
+                        <ShieldCheck className="text-[#EBB2FF]" size={24} strokeWidth={1.5}/>
                     </div>
                     <div className="text-white text-sm py-1 space-y-1.5">
                         <p className="font-mono font-medium tracking-tight">100% Privasi Terjamin</p>

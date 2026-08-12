@@ -10,7 +10,9 @@ export default function Navbar(){
     return(
         <nav className="">
             <div className="fixed left-10 top-3 z-50 flex gap-4 mix-blend-difference text-white ">
-               <h1 className="font-bold text-2xl">Veil</h1>
+                <Link href="/">
+                    <h1 className="font-bold text-2xl">Veil</h1>
+               </Link>
             </div>
             <Link href="/blur">
                 <Button className={`
