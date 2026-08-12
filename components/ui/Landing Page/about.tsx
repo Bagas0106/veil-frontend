@@ -9,7 +9,7 @@ export default function About(){
                     <div className="space-y-14">
                         <div className="max-w-110 space-y-4">
                             <h1 className="bg-[linear-gradient(to_bottom,#EAE8F0_0%,#EAE8F0_51%,#7B7B7B_100%)] bg-clip-text text-transparent text-5xl font-bold font-header">Keamanan <br /> Tanpa Kompromi</h1>
-                            <p className="text-[#C6C6C6] font-inter text-sm">Sistem cerdas kami memastikan foto Anda dianalisis dan disensor langsung di perangkat Anda sendiri. Kami sama sekali tidak memiliki akses untuk melihat, melacak, atau menyentuh data asli Anda.</p>
+                            <p className="text-[#C6C6C6] font-inter text-sm">Sistem cerdas kami memastikan foto Anda diproses murni di dalam memori tanpa pernah disimpan ke dalam media penyimpanan (disk). Kami tidak memiliki akses, tidak melacak, dan tidak merekam gambar asli Anda.</p>
                         </div>
                         <div className="flex gap-14">
                             <div className="">
@@ -18,7 +18,7 @@ export default function About(){
                             </div>
                             <div>
                                 <p className="bg-[linear-gradient(to_bottom,#EAE8F0_0%,#EAE8F0_51%,#7B7B7B_100%)] bg-clip-text text-transparent text-6xl font-header">90%</p>
-                                <p className="font-inter text-[#C6C6C6] text-lg">Face Detection</p>
+                                <p className="font-inter text-[#C6C6C6] text-lg">Text & Object</p>
                             </div>
                         </div>
                     </div>
