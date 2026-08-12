@@ -56,7 +56,7 @@ export default function BlurPage(){
                         <p className="font-mono font-medium tracking-tight">100% Privasi Terjamin</p>
                         <p className="font-inter text-zinc-400 leading-relaxed tracking-tight">
                             Sistem mem-blur area sensitif secara lokal. <br />
-                            Tidak ada satupun foto asli yang dikirim atau disimpan ke server kami.
+                            Gambar hanya diproses di dalam memori dan tidak pernah disimpan ke server kami.
                         </p>
                     </div>
                 </div>
