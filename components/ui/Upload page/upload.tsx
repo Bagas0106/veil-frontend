@@ -29,7 +29,8 @@ export default function Upload({ preview, setPreview, isProcessing, setIsProcess
             const formData = new FormData();
             formData.append("file", file);
             
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/extract`, {
+            const baseUrl = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(/\/$/, "");
+            const res = await fetch(`${baseUrl}/api/extract`, {
                 method: "POST",
                 body: formData
             });
