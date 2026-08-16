@@ -17,7 +17,10 @@ type Props = {
     globalMode: string;
     setGlobalMode: (val: string) => void;
     customImage: string | null;
-    setCustomImage: (val: string | null) => void;
+    globalBlurIntensity: number;
+    setGlobalBlurIntensity: (val: number) => void;
+    hoveredRegion: string | null;
+    setHoveredRegion: (val: string | null) => void;
 }
 
 const MODES = [
@@ -37,7 +40,7 @@ const Checkbox = ({ checked, onChange }: { checked: boolean, onChange: (c: boole
     </div>
 )
 
-export default function Setting({ preview, isProcessing, regions, setRegions, globalMode, setGlobalMode, customImage, setCustomImage }: Props){
+export default function Setting({ preview, isProcessing, regions, setRegions, globalMode, setGlobalMode, customImage, setCustomImage, globalBlurIntensity, setGlobalBlurIntensity, hoveredRegion, setHoveredRegion }: Props){
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [expandedCats, setExpandedCats] = useState<Record<string, boolean>>({});
     const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
@@ -48,6 +51,10 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
 
     const setRegionMode = (id: string, newMode: string) => {
         setRegions(prev => prev.map(r => r.id === id ? { ...r, mode: newMode } : r));
+    }
+
+    const setRegionBlurIntensity = (id: string, intensity: number) => {
+        setRegions(prev => prev.map(r => r.id === id ? { ...r, blurIntensity: intensity } : r));
     }
 
     const toggleGroup = (type: string, state: boolean) => {
@@ -69,6 +76,13 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
         }
     }
 
+    const handleRegionCustomImage = (id: string, e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setRegions(prev => prev.map(r => r.id === id ? { ...r, customImage: URL.createObjectURL(file) } : r));
+        }
+    }
+
     // Default categories if nothing is detected or no image
     const baseCategories = ["wajah", "plat_nomor", "kartu_identitas"];
     const detectedCategories = Array.from(new Set(regions.map(r => r.type)));
@@ -86,29 +100,60 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
 
             {/* Global Actions - Moved to Top */}
             <div className={`shrink-0 space-y-3 pb-2 transition-opacity ${!preview ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
-                <div className="flex items-center justify-between bg-zinc-900/50 p-3 rounded-lg border border-zinc-800">
-                    <p className="text-xs font-medium tracking-wide text-zinc-400">Mode Global</p>
-                    <div className="w-40">
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <button className="w-full bg-zinc-950 border border-zinc-700 hover:border-zinc-500 text-xs font-medium tracking-wide text-zinc-300 py-1.5 px-3 rounded-md transition-colors flex justify-between items-center outline-none">
-                                    <span className="truncate">{MODES.find(m => m.id === globalMode)?.label}</span>
-                                    <ChevronDown className="text-zinc-500 shrink-0 ml-2" size={14} />
-                                </button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-48 bg-zinc-950 border-zinc-800 text-zinc-300 rounded-md shadow-2xl p-1" align="end">
-                                {MODES.map(o => (
-                                    <DropdownMenuItem 
-                                        key={o.id}
-                                        className="text-xs font-medium tracking-wide focus:bg-zinc-800 focus:text-white cursor-pointer rounded-sm px-3 py-2 outline-none transition-colors"
-                                        onClick={() => setGlobalMode(o.id)}
-                                    >
-                                        {o.label}
-                                    </DropdownMenuItem>
-                                ))}
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                <div className="flex flex-col bg-zinc-900/50 p-3 rounded-lg border border-zinc-800 gap-3">
+                    <div className="flex items-center justify-between">
+                        <p className="text-xs font-medium tracking-wide text-zinc-400">Mode Global</p>
+                        <div className="w-40">
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <button className="w-full bg-zinc-950 border border-zinc-700 hover:border-zinc-500 text-xs font-medium tracking-wide text-zinc-300 py-1.5 px-3 rounded-md transition-colors flex justify-between items-center outline-none">
+                                        <span className="truncate">{MODES.find(m => m.id === globalMode)?.label}</span>
+                                        <ChevronDown className="text-zinc-500 shrink-0 ml-2" size={14} />
+                                    </button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="w-48 bg-zinc-950 border-zinc-800 text-zinc-300 rounded-md shadow-2xl p-1" align="end">
+                                    {MODES.map(o => (
+                                        <DropdownMenuItem 
+                                            key={o.id}
+                                            className="text-xs font-medium tracking-wide focus:bg-zinc-800 focus:text-white cursor-pointer rounded-sm px-3 py-2 outline-none transition-colors"
+                                            onClick={() => setGlobalMode(o.id)}
+                                        >
+                                            {o.label}
+                                        </DropdownMenuItem>
+                                    ))}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
                     </div>
+                    {globalMode === 'blur' && (
+                        <div className="flex items-center justify-between gap-3">
+                            <p className="text-xs font-medium tracking-wide text-zinc-400">Intensitas Blur</p>
+                            <input 
+                                type="range" 
+                                min="1" max="40" 
+                                value={globalBlurIntensity} 
+                                onChange={(e) => setGlobalBlurIntensity(parseInt(e.target.value))}
+                                className="flex-1 max-w-[160px] accent-[#EBB2FF]"
+                            />
+                        </div>
+                    )}
+                    {globalMode === 'custom' && (
+                        <div className="flex items-center justify-between bg-zinc-950 border border-zinc-800 p-2.5 rounded-md">
+                            <div className="flex items-center gap-3">
+                                <div className="w-7 h-7 bg-zinc-800 rounded border border-zinc-700 flex items-center justify-center overflow-hidden">
+                                    {customImage ? <img src={customImage} className="w-full h-full object-cover grayscale" /> : <ImagePlus size={12} className="text-zinc-500" />}
+                                </div>
+                                <p className="text-[10px] tracking-wide text-zinc-400">File Kustom Global</p>
+                            </div>
+                            <input type="file" ref={fileInputRef} onChange={handleCustomImage} accept="image/*" className="hidden" />
+                            <button 
+                                onClick={() => fileInputRef.current?.click()}
+                                className="px-3 py-1 bg-white text-black text-[10px] font-bold uppercase tracking-wider rounded-sm hover:bg-zinc-200 transition-colors"
+                            >
+                                Pilih
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -163,7 +208,12 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
                                             const currentMode = r.mode || globalMode;
                                             
                                             return (
-                                                <div key={r.id} className="bg-zinc-900/30 border border-zinc-800 rounded-lg overflow-hidden">
+                                                <div 
+                                                    key={r.id} 
+                                                    className={`bg-zinc-900/30 border ${hoveredRegion === r.id ? 'border-zinc-500 bg-zinc-800/40' : 'border-zinc-800'} rounded-lg overflow-hidden transition-colors`}
+                                                    onMouseEnter={() => setHoveredRegion(r.id)}
+                                                    onMouseLeave={() => setHoveredRegion(null)}
+                                                >
                                                     <div 
                                                         onClick={() => toggleItemExpand(r.id)}
                                                         className="flex items-center justify-between p-3 cursor-pointer hover:bg-zinc-800/50 transition-colors"
@@ -213,17 +263,30 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
                                                                     </DropdownMenuContent>
                                                                 </DropdownMenu>
 
-                                                                {(currentMode === 'custom' || globalMode === 'custom') && (
+                                                                {(currentMode === 'blur') && (
+                                                                    <div className="flex items-center justify-between gap-3 bg-zinc-950 border border-zinc-800 p-2.5 rounded-md">
+                                                                        <p className="text-[10px] tracking-wide text-zinc-400">Intensitas</p>
+                                                                        <input 
+                                                                            type="range" 
+                                                                            min="1" max="40" 
+                                                                            value={r.blurIntensity || globalBlurIntensity} 
+                                                                            onChange={(e) => setRegionBlurIntensity(r.id, parseInt(e.target.value))}
+                                                                            className="flex-1 max-w-[120px] accent-[#EBB2FF]"
+                                                                        />
+                                                                    </div>
+                                                                )}
+
+                                                                {(currentMode === 'custom') && (
                                                                     <div className="flex items-center justify-between bg-zinc-950 border border-zinc-800 p-2.5 rounded-md">
                                                                         <div className="flex items-center gap-3">
                                                                             <div className="w-7 h-7 bg-zinc-800 rounded border border-zinc-700 flex items-center justify-center overflow-hidden">
-                                                                                {customImage ? <img src={customImage} className="w-full h-full object-cover grayscale" /> : <ImagePlus size={12} className="text-zinc-500" />}
+                                                                                {(r.customImage || customImage) ? <img src={r.customImage || customImage || ""} className="w-full h-full object-cover grayscale" /> : <ImagePlus size={12} className="text-zinc-500" />}
                                                                             </div>
-                                                                            <p className="text-[10px] tracking-wide text-zinc-400">File Kustom</p>
+                                                                            <p className="text-[10px] tracking-wide text-zinc-400">File Kustom Area</p>
                                                                         </div>
-                                                                        <input type="file" ref={fileInputRef} onChange={handleCustomImage} accept="image/*" className="hidden" />
+                                                                        <input type="file" id={`file-${r.id}`} onChange={(e) => handleRegionCustomImage(r.id, e)} accept="image/*" className="hidden" />
                                                                         <button 
-                                                                            onClick={() => fileInputRef.current?.click()}
+                                                                            onClick={() => document.getElementById(`file-${r.id}`)?.click()}
                                                                             className="px-3 py-1 bg-white text-black text-[10px] font-bold uppercase tracking-wider rounded-sm hover:bg-zinc-200 transition-colors"
                                                                         >
                                                                             Pilih

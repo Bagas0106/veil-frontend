@@ -5,7 +5,7 @@ import { ShieldCheck } from "lucide-react"
 import { useState } from "react"
 
 export type Box = { x: number, y: number, width: number, height: number }
-export type Region = { id: string, type: string, value: string, box: Box, enabled: boolean, mode?: string }
+export type Region = { id: string, type: string, value: string, box: Box, enabled: boolean, mode?: string, customImage?: string | null, blurIntensity?: number }
 
 export default function BlurPage(){
     const [preview, setPreview] = useState<string | null>(null);
@@ -13,6 +13,8 @@ export default function BlurPage(){
     const [regions, setRegions] = useState<Region[]>([]);
     const [globalMode, setGlobalMode] = useState<string>("blur");
     const [customImage, setCustomImage] = useState<string | null>(null);
+    const [globalBlurIntensity, setGlobalBlurIntensity] = useState<number>(10);
+    const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
 
     return(
         <div className="min-h-screen bg-black text-white font-inter selection:bg-white selection:text-black">
@@ -34,6 +36,8 @@ export default function BlurPage(){
                         setRegions={setRegions}
                         globalMode={globalMode}
                         customImage={customImage}
+                        globalBlurIntensity={globalBlurIntensity}
+                        hoveredRegion={hoveredRegion}
                     />
                     <Setting 
                         preview={preview}
@@ -44,6 +48,10 @@ export default function BlurPage(){
                         setGlobalMode={setGlobalMode}
                         customImage={customImage}
                         setCustomImage={setCustomImage}
+                        globalBlurIntensity={globalBlurIntensity}
+                        setGlobalBlurIntensity={setGlobalBlurIntensity}
+                        hoveredRegion={hoveredRegion}
+                        setHoveredRegion={setHoveredRegion}
                     />
                 </div>
                 
