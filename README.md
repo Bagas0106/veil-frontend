@@ -1,35 +1,35 @@
+ # Veil Frontend Web
+    
+## Deskripsi Singkat
+Veil Frontend ini adalah aplikasi web yang nge-handle antarmuka (*User Interface*) buat ngelindungin privasi di foto. Sistem ini dibikin biar *user* bisa milih area sensitif yang udah dideteksi (kayak wajah, plat
+  nomor, atau kartu identitas), terus menyensornya pakai opsi seperti *Blur*, Mozaic, Blok Hitam/Putih, sampai pakai Gambar Kustom. Biar privasi bener-bener aman, semua proses manipulasi dan sensor gambar dijalanin
+  100% secara lokal langsung di peramban (*browser* / *client-side*), jadi nggak ada gambar yang dikirim atau disimpen di server.
+    
+## Teknologi (Stack) yang Digunakan
+- Frontend ini dibangun pakai ekosistem React dan beberapa *library*, yaitu:
+- **Next.js**: Framework utama berbasis React buat bikin aplikasi web-nya.
+- **TypeScript**: Dipake biar nulis kodenya lebih aman, rapi, dan gampang *debug*-nya.
+- **Tailwind CSS**: Framework CSS *utility-first* buat bikin tampilannya rapi dan responsif.
+- **shadcn/ui & Radix UI**: Dipakai buat ngebangun komponen UI biar tampilannya modern dan interaktif.
+- **Lucide React**: Kumpulan ikon yang dipakai di seluruh tampilan web.
+- **Native Canvas API**: Dipakai buat nge-gambar ulang foto, nerapin filter sensor, dan ngunduh hasilnya tanpa butuh *library* tambahan yang berat.
 
-    # 🛡️ Veil - Proteksi Privasi Foto Cerdas
-    
-    ## 📖 Deskripsi Singkat Website
-    **Veil** adalah aplikasi berbasis web yang dirancang untuk melindungi privasi dan keamanan identitas seseorang di dalam sebuah foto. Sistem dapat memproses area sensitif (seperti wajah, plat nomor kendaraan, atau     kartu identitas), lalu memberikan pengguna kebebasan untuk menyensor area tersebut menggunakan berbagai pilihan mode: *Blur Halus*, *Mozaic*, *Blok Hitam/Putih*, hingga menyensor menggunakan *Gambar Kustom*.          Untuk menjamin 100% privasi pengguna, seluruh proses pengolahan, penyensoran, dan penyimpanan gambar dilakukan secara lokal di perangkat Anda (*client-side*). Gambar tidak akan pernah dikirimkan atau disimpan         diserver kami.
-    
-    ## 💻 Teknologi (Stack) yang Digunakan
-    Website ini dibangun dengan menggunakan arsitektur modern dan teknologi berikut:
-    - **Framework Utama:** [Next.js](https://nextjs.org/) (React)
-    - **Bahasa Pemrograman:** TypeScript
-    - **Styling:** Tailwind CSS
-    - **Komponen Antarmuka (UI):** shadcn/ui & Radix UI
-    - **Ikonografi:** Lucide React
-    - **Pemrosesan Gambar:** Native HTML5 Canvas API (Tanpa bantuan library pihak ketiga yang rentan untuk merender filter secara *native*)
-    ## 🚀 Cara / Panduan Menjalankan Website
-    
-    Berikut adalah panduan langkah demi langkah untuk menjalankan aplikasi **Veil** di mesin lokal (*localhost*) Anda:
+    ## Cara Menjalankan Frontend (Lokal)
+    Ikuti langkah-langkah ini kalau mau ngejalanin server frontend-nya di komputer lokal:
 
-    1. **Clone Repository**  
-       Buka terminal/CMD Anda dan jalankan perintah berikut untuk mengkloning repositori ini:
+    1. **Pastikan Node.js udah terinstall** di komputer kamu.
+    2. Buka terminal atau command prompt, terus masuk ke folder *repository* frontend-nya.
+    3. **Install semua *library* / *dependencies*** yang dibutuhin:
        ```bash
-       git clone <masukkan-link-repository-github-anda-disini>
-       cd <masukkan-nama-folder-repo-disini>
+       npm install
 
-    2. Install Dependencies
-    Pastikan perangkat Anda sudah terinstal Node.js https://nodejs.org/. Kemudian, jalankan perintah di bawah ini untuk menginstal semua dependensi yang dibutuhkan:
-      npm install
-  
-    3. Jalankan Server Development
-    Setelah instalasi paket selesai, jalankan server mode lokal:
-      npm run dev
-  
-    4. Buka Aplikasi
-    Buka peramban (browser) favorit Anda dan kunjungi tautan berikut:
-    http://localhost:3000
+  4. Jalanin server frontend-nya (mode development):
+    npm run dev
+
+  5. Frontend bakal jalan di port 3000, bisa cek dan buka aplikasinya lewat browser:
+      • Local URL: http://localhost:3000
+
+
+  ## Informasi Akun Demo
+
+  Tidak ada fitur login, sehingga tidak ada akun demo. Semua fitur bisa langsung dipakai dari halaman utama.
