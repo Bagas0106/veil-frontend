@@ -13,13 +13,29 @@ type UploadProps = {
     setRegions: React.Dispatch<React.SetStateAction<Region[]>>;
     globalMode: string;
     customImage: string | null;
+    globalBlurIntensity: number;
+    hoveredRegion: string | null;
 }
 
-export default function Upload({ preview, setPreview, isProcessing, setIsProcessing, regions, setRegions, globalMode, customImage }: UploadProps) {
+export default function Upload({ preview, setPreview, isProcessing, setIsProcessing, regions, setRegions, globalMode, customImage, globalBlurIntensity, hoveredRegion }: UploadProps) {
     const inputRef = useRef<HTMLInputElement>(null);
     const [isDraging, setIsDraging] = useState(false);
     const [imgDims, setImgDims] = useState({ width: 1, height: 1 });
     const imgRef = useRef<HTMLImageElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const [isDrawing, setIsDrawing] = useState(false);
+    const [drawStart, setDrawStart] = useState<{x: number, y: number} | null>(null);
+    const [currentDraw, setCurrentDraw] = useState<{x: number, y: number, width: number, height: number} | null>(null);
+
+    const [activeInteraction, setActiveInteraction] = useState<{
+        type: 'resize' | 'move',
+        id: string,
+        startX: number,
+        startY: number,
+        startBox: {x: number, y: number, width: number, height: number},
+        edge?: string
+    } | null>(null);
 
     const processImageApi = async (file: File) => {
         setIsProcessing(true);
@@ -92,10 +108,138 @@ export default function Upload({ preview, setPreview, isProcessing, setIsProcess
         setRegions([]);
     }
 
+    const handlePointerDown = (e: React.PointerEvent) => {
+        if (!containerRef.current || !imgRef.current) return;
+        
+        // Prevent drawing if we are clicking on an existing region
+        if ((e.target as HTMLElement).closest('.region-overlay')) return;
+
+        e.preventDefault();
+
+        const rect = imgRef.current.getBoundingClientRect();
+        const scaleX = imgDims.width / rect.width;
+        const scaleY = imgDims.height / rect.height;
+        
+        const x = (e.clientX - rect.left) * scaleX;
+        const y = (e.clientY - rect.top) * scaleY;
+        
+        if (x >= 0 && x <= imgDims.width && y >= 0 && y <= imgDims.height) {
+            setIsDrawing(true);
+            setDrawStart({ x, y });
+            setCurrentDraw({ x, y, width: 0, height: 0 });
+            e.currentTarget.setPointerCapture(e.pointerId);
+        }
+    }
+
+    const handlePointerMove = (e: React.PointerEvent) => {
+        if (!imgRef.current) return;
+
+        const rect = imgRef.current.getBoundingClientRect();
+        const scaleX = imgDims.width / rect.width;
+        const scaleY = imgDims.height / rect.height;
+        
+        const currentX = Math.max(0, Math.min(imgDims.width, (e.clientX - rect.left) * scaleX));
+        const currentY = Math.max(0, Math.min(imgDims.height, (e.clientY - rect.top) * scaleY));
+
+        if (activeInteraction) {
+            const dx = currentX - activeInteraction.startX;
+            const dy = currentY - activeInteraction.startY;
+            
+            setRegions(prev => prev.map(r => {
+                if (r.id !== activeInteraction.id) return r;
+                
+                let newBox = { ...activeInteraction.startBox };
+                
+                if (activeInteraction.type === 'move') {
+                    newBox.x = Math.max(0, Math.min(imgDims.width - newBox.width, newBox.x + dx));
+                    newBox.y = Math.max(0, Math.min(imgDims.height - newBox.height, newBox.y + dy));
+                } else if (activeInteraction.type === 'resize' && activeInteraction.edge) {
+                    if (activeInteraction.edge.includes('left')) {
+                        const newX = Math.min(newBox.x + newBox.width - 10, Math.max(0, newBox.x + dx));
+                        newBox.width += (newBox.x - newX);
+                        newBox.x = newX;
+                    }
+                    if (activeInteraction.edge.includes('right')) {
+                        newBox.width = Math.max(10, Math.min(imgDims.width - newBox.x, newBox.width + dx));
+                    }
+                    if (activeInteraction.edge.includes('top')) {
+                        const newY = Math.min(newBox.y + newBox.height - 10, Math.max(0, newBox.y + dy));
+                        newBox.height += (newBox.y - newY);
+                        newBox.y = newY;
+                    }
+                    if (activeInteraction.edge.includes('bottom')) {
+                        newBox.height = Math.max(10, Math.min(imgDims.height - newBox.y, newBox.height + dy));
+                    }
+                }
+                
+                return { ...r, box: newBox };
+            }));
+            return;
+        }
+
+        if (isDrawing && drawStart) {
+            setCurrentDraw({
+                x: Math.min(drawStart.x, currentX),
+                y: Math.min(drawStart.y, currentY),
+                width: Math.abs(currentX - drawStart.x),
+                height: Math.abs(currentY - drawStart.y)
+            });
+        }
+    }
+
+    const handlePointerUp = (e: React.PointerEvent) => {
+        if (activeInteraction) {
+            setActiveInteraction(null);
+            try { e.currentTarget.releasePointerCapture(e.pointerId); } catch(e){}
+            return;
+        }
+
+        if (isDrawing && currentDraw) {
+            if (currentDraw.width > 20 && currentDraw.height > 20) {
+                const newRegion: Region = {
+                    id: Math.random().toString(36).substring(7),
+                    type: 'kustom',
+                    value: 'Kustom',
+                    box: currentDraw,
+                    enabled: true,
+                    mode: globalMode
+                };
+                setRegions(prev => [...prev, newRegion]);
+            }
+            setIsDrawing(false);
+            setDrawStart(null);
+            setCurrentDraw(null);
+            try { e.currentTarget.releasePointerCapture(e.pointerId); } catch(e){}
+        }
+    }
+
+    const handleRegionInteractionStart = (e: React.PointerEvent, id: string, type: 'resize' | 'move', edge?: string) => {
+        e.stopPropagation();
+        e.preventDefault();
+        
+        const region = regions.find(r => r.id === id);
+        if (!region || !imgRef.current) return;
+        
+        const rect = imgRef.current.getBoundingClientRect();
+        const scaleX = imgDims.width / rect.width;
+        const scaleY = imgDims.height / rect.height;
+        
+        const x = (e.clientX - rect.left) * scaleX;
+        const y = (e.clientY - rect.top) * scaleY;
+        
+        setActiveInteraction({
+            type, id, startX: x, startY: y, startBox: { ...region.box }, edge
+        });
+        
+        if (containerRef.current) {
+            containerRef.current.setPointerCapture(e.pointerId);
+        }
+    }
+
     const getOverlayStyle = (currentMode: string) => {
         switch (currentMode) {
             case 'blur':
-                return 'backdrop-blur-3xl bg-zinc-400/20 border border-white/10';
+                return 'bg-zinc-400/20 border border-white/10';
             case 'black':
                 return 'bg-black border border-zinc-800';
             case 'white':
@@ -105,7 +249,7 @@ export default function Upload({ preview, setPreview, isProcessing, setIsProcess
             case 'custom':
                 return 'bg-zinc-900 border border-zinc-800 overflow-hidden';
             default:
-                return 'backdrop-blur-3xl bg-zinc-400/20';
+                return 'bg-zinc-400/20';
         }
     }
 
@@ -127,44 +271,84 @@ export default function Upload({ preview, setPreview, isProcessing, setIsProcess
                             </div>
                         )}
                         
-                        <div className="relative inline-block max-w-full max-h-[65vh]">
+                        <div 
+                            ref={containerRef}
+                            className="relative inline-block max-w-full max-h-[65vh] touch-none"
+                            onPointerDown={handlePointerDown}
+                            onPointerMove={handlePointerMove}
+                            onPointerUp={handlePointerUp}
+                            onPointerLeave={handlePointerUp}
+                        >
                             <img 
                                 ref={imgRef}
                                 src={preview} 
                                 alt="preview" 
                                 onLoad={handleImageLoad}
-                                className="max-w-full max-h-[65vh] object-contain rounded-md" 
+                                className="max-w-full max-h-[65vh] object-contain rounded-md select-none pointer-events-none" 
                             />
                             
-                            {imgDims.width > 1 && activeRegions.length > 0 && (
+                            {imgDims.width > 1 && (
                                 <div className="absolute inset-0 z-10 pointer-events-none">
                                     {activeRegions.map((r) => {
                                         const currentMode = r.mode || globalMode;
+                                        const intensity = r.blurIntensity || globalBlurIntensity;
+                                        const imageToUse = r.customImage || customImage;
+                                        
                                         return (
                                             <div 
                                                 key={r.id}
-                                                className={`absolute overflow-hidden flex items-center justify-center transition-all duration-300 rounded-sm ${getOverlayStyle(currentMode)}`}
+                                                className={`region-overlay absolute overflow-hidden flex items-center justify-center rounded-sm pointer-events-auto group ${getOverlayStyle(currentMode)}`}
+                                                onPointerDown={(e) => handleRegionInteractionStart(e, r.id, 'move')}
                                                 style={{
                                                     left: `${(r.box.x / imgDims.width) * 100}%`,
                                                     top: `${(r.box.y / imgDims.height) * 100}%`,
                                                     width: `${(r.box.width / imgDims.width) * 100}%`,
-                                                    height: `${(r.box.height / imgDims.height) * 100}%`
+                                                    height: `${(r.box.height / imgDims.height) * 100}%`,
+                                                    backdropFilter: currentMode === 'blur' ? `blur(${intensity}px)` : undefined,
+                                                    WebkitBackdropFilter: currentMode === 'blur' ? `blur(${intensity}px)` : undefined,
+                                                    cursor: activeInteraction?.id === r.id && activeInteraction.type === 'move' ? 'grabbing' : 'grab',
+                                                    border: activeInteraction?.id === r.id ? '2px solid #EBB2FF' : hoveredRegion === r.id ? '2px solid white' : undefined
                                                 }}
                                             >
                                                 {currentMode === "mozaic" && (
                                                     <div 
-                                                        className="absolute inset-0 opacity-30 mix-blend-overlay"
+                                                        className="absolute inset-0 opacity-30 mix-blend-overlay pointer-events-none"
                                                         style={{
                                                             backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 6px, #000 6px, #000 12px), repeating-linear-gradient(90deg, transparent, transparent 6px, #000 6px, #000 12px)'
                                                         }}
                                                     />
                                                 )}
-                                                {currentMode === "custom" && customImage && (
-                                                    <img src={customImage} className="w-full h-full object-cover grayscale opacity-90" alt="custom" />
+                                                {currentMode === "custom" && imageToUse && (
+                                                    <img src={imageToUse} className="w-full h-full object-cover grayscale opacity-90 pointer-events-none" alt="custom" />
                                                 )}
+                                                
+                                                {/* Resize Handles */}
+                                                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                                    <div className="absolute top-0 left-0 w-3 h-3 bg-[#EBB2FF] pointer-events-auto cursor-nwse-resize rounded-br-sm" onPointerDown={(e) => handleRegionInteractionStart(e, r.id, 'resize', 'top-left')} />
+                                                    <div className="absolute top-0 right-0 w-3 h-3 bg-[#EBB2FF] pointer-events-auto cursor-nesw-resize rounded-bl-sm" onPointerDown={(e) => handleRegionInteractionStart(e, r.id, 'resize', 'top-right')} />
+                                                    <div className="absolute bottom-0 left-0 w-3 h-3 bg-[#EBB2FF] pointer-events-auto cursor-nesw-resize rounded-tr-sm" onPointerDown={(e) => handleRegionInteractionStart(e, r.id, 'resize', 'bottom-left')} />
+                                                    <div className="absolute bottom-0 right-0 w-3 h-3 bg-[#EBB2FF] pointer-events-auto cursor-nwse-resize rounded-tl-sm" onPointerDown={(e) => handleRegionInteractionStart(e, r.id, 'resize', 'bottom-right')} />
+                                                    
+                                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-2 bg-[#EBB2FF] pointer-events-auto cursor-ns-resize rounded-b-sm" onPointerDown={(e) => handleRegionInteractionStart(e, r.id, 'resize', 'top')} />
+                                                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-2 bg-[#EBB2FF] pointer-events-auto cursor-ns-resize rounded-t-sm" onPointerDown={(e) => handleRegionInteractionStart(e, r.id, 'resize', 'bottom')} />
+                                                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-[#EBB2FF] pointer-events-auto cursor-ew-resize rounded-r-sm" onPointerDown={(e) => handleRegionInteractionStart(e, r.id, 'resize', 'left')} />
+                                                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-[#EBB2FF] pointer-events-auto cursor-ew-resize rounded-l-sm" onPointerDown={(e) => handleRegionInteractionStart(e, r.id, 'resize', 'right')} />
+                                                </div>
                                             </div>
                                         );
                                     })}
+                                    
+                                    {isDrawing && currentDraw && (
+                                        <div 
+                                            className="absolute border-2 border-[#EBB2FF] bg-[#EBB2FF]/20"
+                                            style={{
+                                                left: `${(currentDraw.x / imgDims.width) * 100}%`,
+                                                top: `${(currentDraw.y / imgDims.height) * 100}%`,
+                                                width: `${(currentDraw.width / imgDims.width) * 100}%`,
+                                                height: `${(currentDraw.height / imgDims.height) * 100}%`,
+                                            }}
+                                        />
+                                    )}
                                 </div>
                             )}
                         </div>
