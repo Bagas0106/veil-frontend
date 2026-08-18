@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useRef, useState } from "react"
-import { CloudUpload, Camera, Loader2, Download, RefreshCcw } from "lucide-react"
+import { CloudUpload, Camera, Loader2, RefreshCcw } from "lucide-react"
 import { Region } from "@/app/blur/page"
 
 type UploadProps = {
@@ -45,7 +45,8 @@ export default function Upload({ preview, setPreview, isProcessing, setIsProcess
             const formData = new FormData();
             formData.append("file", file);
             
-            const res = await fetch("http://localhost:8000/api/extract", {
+            const baseUrl = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(/\/$/, "");
+            const res = await fetch(`${baseUrl}/api/extract`, {
                 method: "POST",
                 body: formData
             });
@@ -53,6 +54,7 @@ export default function Upload({ preview, setPreview, isProcessing, setIsProcess
             if (!res.ok) throw new Error("API Error");
             const data = await res.json();
             
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const formattedRegions = (data.regions || []).map((r: any) => ({
                 ...r,
                 id: Math.random().toString(36).substring(7),
@@ -270,6 +272,7 @@ export default function Upload({ preview, setPreview, isProcessing, setIsProcess
                         )}
                         
                         <div 
+                            id="image-preview-container"
                             ref={containerRef}
                             className="relative inline-block max-w-full max-h-[65vh] touch-none"
                             onPointerDown={handlePointerDown}

@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+ # Veil Frontend Web
+    
+## Deskripsi Singkat
+Veil Frontend ini adalah aplikasi web yang nge-handle antarmuka (*User Interface*) buat ngelindungin privasi di foto. Sistem ini dibikin biar *user* bisa milih area sensitif yang udah dideteksi (kayak wajah, plat
+  nomor, atau kartu identitas), terus menyensornya pakai opsi seperti *Blur*, Mozaic, Blok Hitam/Putih, sampai pakai Gambar Kustom. Biar privasi bener-bener aman, semua proses manipulasi dan sensor gambar dijalanin
+  100% secara lokal langsung di peramban (*browser* / *client-side*), jadi nggak ada gambar yang dikirim atau disimpen di server.
+    
+## Teknologi (Stack) yang Digunakan
+- Frontend ini dibangun pakai ekosistem React dan beberapa *library*, yaitu:
+- **Next.js**: Framework utama berbasis React buat bikin aplikasi web-nya.
+- **TypeScript**: Dipake biar nulis kodenya lebih aman, rapi, dan gampang *debug*-nya.
+- **Tailwind CSS**: Framework CSS *utility-first* buat bikin tampilannya rapi dan responsif.
+- **shadcn/ui & Radix UI**: Dipakai buat ngebangun komponen UI biar tampilannya modern dan interaktif.
+- **Lucide React**: Kumpulan ikon yang dipakai di seluruh tampilan web.
+- **Native Canvas API**: Dipakai buat nge-gambar ulang foto, nerapin filter sensor, dan ngunduh hasilnya tanpa butuh *library* tambahan yang berat.
 
-## Getting Started
+    ## Cara Menjalankan Frontend (Lokal)
+    Ikuti langkah-langkah ini kalau mau ngejalanin server frontend-nya di komputer lokal:
 
-First, run the development server:
+    1. **Pastikan Node.js udah terinstall** di komputer kamu.
+    2. Buka terminal atau command prompt, terus masuk ke folder *repository* frontend-nya.
+    3. **Install semua *library* / *dependencies*** yang dibutuhin:
+       ```bash
+       npm install
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+  4. Jalanin server frontend-nya (mode development):
+    npm run dev
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+  5. Frontend bakal jalan di port 3000, bisa cek dan buka aplikasinya lewat browser:
+      • Local URL: http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+  ## Informasi Akun Demo
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+  Tidak ada fitur login, sehingga tidak ada akun demo. Semua fitur bisa langsung dipakai dari halaman utama.

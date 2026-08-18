@@ -32,6 +32,7 @@ export function TocSidebar() {
       };
     });
     
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHeadings(items);
 
     // 2. Fungsi untuk mendeteksi scroll dan highlight menu yang aktif

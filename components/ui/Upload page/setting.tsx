@@ -17,6 +17,7 @@ type Props = {
     globalMode: string;
     setGlobalMode: (val: string) => void;
     customImage: string | null;
+    setCustomImage: (val: string | null) => void;
     globalBlurIntensity: number;
     setGlobalBlurIntensity: (val: number) => void;
     hoveredRegion: string | null;
@@ -83,6 +84,107 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
         }
     }
 
+    const handleDownload = async (mimeType: string, extension: string, quality?: number) => {
+        if (!preview) return;
+        
+        try {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            await new Promise((resolve, reject) => {
+                img.onload = resolve;
+                img.onerror = reject;
+                img.src = preview;
+            });
+
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            ctx.drawImage(img, 0, 0);
+
+            const activeRegions = regions.filter(r => r.enabled);
+
+            for (const r of activeRegions) {
+                const currentMode = r.mode || globalMode;
+                const intensity = r.blurIntensity || globalBlurIntensity;
+                const imageToUse = r.customImage || customImage;
+
+                const { x, y, width, height } = r.box;
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.rect(x, y, width, height);
+                ctx.clip();
+
+                if (currentMode === 'blur') {
+                    ctx.filter = `blur(${intensity}px)`;
+                    ctx.drawImage(img, 0, 0);
+                } else if (currentMode === 'black') {
+                    ctx.fillStyle = 'black';
+                    ctx.fill();
+                    ctx.strokeStyle = '#27272a';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                } else if (currentMode === 'white') {
+                    ctx.fillStyle = 'white';
+                    ctx.fill();
+                    ctx.strokeStyle = '#e4e4e7';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                } else if (currentMode === 'mozaic') {
+                    ctx.filter = 'blur(10px)';
+                    ctx.drawImage(img, 0, 0);
+                    ctx.filter = 'none';
+                    
+                    ctx.fillStyle = 'rgba(0,0,0,0.1)';
+                    ctx.fill();
+
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+                    for (let px = x; px < x + width; px += 12) {
+                        ctx.beginPath();
+                        ctx.moveTo(px, y);
+                        ctx.lineTo(px, y + height);
+                        ctx.stroke();
+                    }
+                    for (let py = y; py < y + height; py += 12) {
+                        ctx.beginPath();
+                        ctx.moveTo(x, py);
+                        ctx.lineTo(x + width, py);
+                        ctx.stroke();
+                    }
+                } else if (currentMode === 'custom' && imageToUse) {
+                    const customImg = new Image();
+                    customImg.crossOrigin = "anonymous";
+                    await new Promise((resolve, reject) => {
+                        customImg.onload = resolve;
+                        customImg.onerror = reject;
+                        customImg.src = imageToUse;
+                    });
+                    ctx.filter = 'grayscale(100%)';
+                    ctx.drawImage(customImg, x, y, width, height);
+                } else {
+                    ctx.fillStyle = 'rgba(161, 161, 170, 0.2)';
+                    ctx.fill();
+                }
+                
+                ctx.restore();
+            }
+
+            const dataUrl = canvas.toDataURL(mimeType, quality);
+            const link = document.createElement('a');
+            link.download = `veil-protected.${extension}`;
+            link.href = dataUrl;
+            link.click();
+        } catch (err) {
+            console.error('Download failed', err);
+            alert('Gagal mengunduh gambar');
+        }
+    };
+
     // Default categories if nothing is detected or no image
     const baseCategories = ["wajah", "plat_nomor", "kartu_identitas"];
     const detectedCategories = Array.from(new Set(regions.map(r => r.type)));
@@ -141,7 +243,7 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
                         <div className="flex items-center justify-between bg-zinc-950 border border-zinc-800 p-2.5 rounded-md">
                             <div className="flex items-center gap-3">
                                 <div className="w-7 h-7 bg-zinc-800 rounded border border-zinc-700 flex items-center justify-center overflow-hidden">
-                                    {customImage ? <img src={customImage} className="w-full h-full object-cover grayscale" /> : <ImagePlus size={12} className="text-zinc-500" />}
+                                    {customImage ? <img src={customImage} alt="custom global" className="w-full h-full object-cover grayscale" /> : <ImagePlus size={12} className="text-zinc-500" />}
                                 </div>
                                 <p className="text-[10px] tracking-wide text-zinc-400">File Kustom Global</p>
                             </div>
@@ -280,7 +382,7 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
                                                                     <div className="flex items-center justify-between bg-zinc-950 border border-zinc-800 p-2.5 rounded-md">
                                                                         <div className="flex items-center gap-3">
                                                                             <div className="w-7 h-7 bg-zinc-800 rounded border border-zinc-700 flex items-center justify-center overflow-hidden">
-                                                                                {(r.customImage || customImage) ? <img src={r.customImage || customImage || ""} className="w-full h-full object-cover grayscale" /> : <ImagePlus size={12} className="text-zinc-500" />}
+                                                                                {(r.customImage || customImage) ? <img src={r.customImage || customImage || ""} alt="custom region" className="w-full h-full object-cover grayscale" /> : <ImagePlus size={12} className="text-zinc-500" />}
                                                                             </div>
                                                                             <p className="text-[10px] tracking-wide text-zinc-400">File Kustom Area</p>
                                                                         </div>
@@ -323,21 +425,27 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
                         <DropdownMenuContent className="w-full min-w-[200px] bg-zinc-950 border-zinc-800 text-zinc-300 rounded-md shadow-2xl p-1" align="center" side="top" sideOffset={8}>
                             <DropdownMenuItem 
                                 className="text-sm font-semibold tracking-wide focus:bg-zinc-800 focus:text-white cursor-pointer rounded-sm px-4 py-3 outline-none transition-colors flex justify-between"
-                                onClick={() => alert('Download as PNG feature coming soon')}
+                                onClick={async () => {
+                                    await handleDownload('image/png', 'png');
+                                }}
                             >
                                 Simpan sebagai PNG
                             </DropdownMenuItem>
                             <div className="h-px bg-zinc-800 my-1"></div>
                             <DropdownMenuItem 
                                 className="text-sm font-semibold tracking-wide focus:bg-zinc-800 focus:text-white cursor-pointer rounded-sm px-4 py-3 outline-none transition-colors flex justify-between"
-                                onClick={() => alert('Download as JPG feature coming soon')}
+                                onClick={async () => {
+                                    await handleDownload('image/jpeg', 'jpg', 0.9);
+                                }}
                             >
                                 Simpan sebagai JPG
                             </DropdownMenuItem>
                             <div className="h-px bg-zinc-800 my-1"></div>
                             <DropdownMenuItem 
                                 className="text-sm font-semibold tracking-wide focus:bg-zinc-800 focus:text-white cursor-pointer rounded-sm px-4 py-3 outline-none transition-colors flex justify-between"
-                                onClick={() => alert('Download as WEBP feature coming soon')}
+                                onClick={async () => {
+                                    await handleDownload('image/webp', 'webp', 0.9);
+                                }}
                             >
                                 Simpan sebagai WEBP
                             </DropdownMenuItem>
