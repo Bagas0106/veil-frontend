@@ -8,12 +8,12 @@ import { div } from "framer-motion/client";
 
 export default function Preview(){
     const images = [
-        "images/image1.png",
-        "images/image2.png",
-        "images/image3.png",
-        "images/image4.png",
-        "images/image5.png",
-        "linus.jpg"
+        "/preview.gif",
+        "/images/image2.png",
+        "/images/image3.png",
+        "/images/image4.png",
+        "/images/image5.png",
+        "/linus.jpg"
     ]
 
     const infiniteImage = [...images,...images];
@@ -55,7 +55,7 @@ export default function Preview(){
                                 : "border-transparent opacity-50 hover:opacity-100"
                             }`}
                         >
-                            <img src={img} alt="Thumbnail" className="w-[150px] h-[90px] sm:w-[280px] sm:h-[160px] object-cover" />
+                            <img src={img === "/preview.gif" ? "/preview-thumbnail.png" : img} alt="Thumbnail" className="w-[150px] h-[90px] sm:w-[280px] sm:h-[160px] object-cover" />
                         </div>
                         </div>
                     ))}
