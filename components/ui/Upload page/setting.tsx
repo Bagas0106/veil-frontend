@@ -186,7 +186,7 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
     };
 
     // default kategori klo ga nemu apa apa ato gada gambar
-    const baseCategories = ["wajah", "plat_nomor", "kartu_identitas"];
+    const baseCategories = ["wajah", "plat_nomor", "Barcode/qr"];
     const detectedCategories = Array.from(new Set(regions.map(r => r.type)));
     const categories = preview ? (detectedCategories.length > 0 ? detectedCategories : baseCategories) : baseCategories;
 

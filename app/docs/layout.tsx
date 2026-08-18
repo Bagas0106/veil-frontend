@@ -1,6 +1,12 @@
 import React from 'react';
 import { DocsSidebar } from './docs-sidebar';
 import { TocSidebar } from './toc-sidebar';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Dokumentasi',
+  description: 'Dokumentasi resmi untuk aplikasi Veil.',
+};
 
 export default function DocsLayout({
   children,

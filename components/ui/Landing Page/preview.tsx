@@ -13,7 +13,7 @@ export default function Preview(){
         "/images/image3.png",
         "/images/image4.png",
         "/images/image5.png",
-        "/linus.jpg"
+        "/images/image6.png"
     ]
 
     const infiniteImage = [...images,...images];
