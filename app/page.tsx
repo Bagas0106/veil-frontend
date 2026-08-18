@@ -4,6 +4,13 @@ import Preview from "@/components/ui/Landing Page/preview";
 import Explanation from "@/components/ui/Landing Page/explanation";
 import Next from "@/components/ui/Landing Page/next";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Beranda",
+  description: "Selamat datang di Veil, aplikasi privasi foto cerdas yang memproses semuanya secara lokal.",
+};
+
 export default function Home() {
   return (
     <main className="bg-black relative overflow-hidden scroll-smooth">
