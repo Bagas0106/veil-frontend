@@ -106,6 +106,7 @@ export function DocsSidebar() {
 
   // Close mobile sidebar on route change
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMobileOpen(false);
   }, [pathname]);
 
@@ -132,9 +133,7 @@ export function DocsSidebar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const activeLink = SECTIONS.flatMap(s => s.links).find(l => l.href === pathname);
-      let currentActiveId = "";
-      let minTop = Infinity;
+      // Intentionally left empty as previous implementation had unused variables
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });

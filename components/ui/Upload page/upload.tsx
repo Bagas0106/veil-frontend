@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useRef, useState } from "react"
-import { CloudUpload, Camera, Loader2, Download, RefreshCcw } from "lucide-react"
+import { CloudUpload, Camera, Loader2, RefreshCcw } from "lucide-react"
 import { Region } from "@/app/blur/page"
 
 type UploadProps = {
@@ -38,6 +38,7 @@ export default function Upload({ preview, setPreview, isProcessing, setIsProcess
             if (!res.ok) throw new Error("API Error");
             const data = await res.json();
             
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const formattedRegions = (data.regions || []).map((r: any) => ({
                 ...r,
                 id: Math.random().toString(36).substring(7),

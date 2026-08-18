@@ -13,11 +13,11 @@ export default function About(){
                         </div>
                         <div className="flex justify-center lg:justify-start gap-8 sm:gap-14">
                             <div className="">
-                                <p className="bg-[linear-gradient(to_bottom,#EAE8F0_0%,#EAE8F0_51%,#7B7B7B_100%)] bg-clip-text text-transparent text-5xl sm:text-6xl font-header">90%</p>
+                                <p className="bg-[linear-gradient(to_bottom,#EAE8F0_0%,#EAE8F0_51%,#7B7B7B_100%)] bg-clip-text text-transparent text-5xl sm:text-6xl font-header">80%</p>
                                 <p className="font-inter text-[#C6C6C6] text-sm md:text-lg">Face Detection</p>
                             </div>
                             <div>
-                                <p className="bg-[linear-gradient(to_bottom,#EAE8F0_0%,#EAE8F0_51%,#7B7B7B_100%)] bg-clip-text text-transparent text-5xl sm:text-6xl font-header">90%</p>
+                                <p className="bg-[linear-gradient(to_bottom,#EAE8F0_0%,#EAE8F0_51%,#7B7B7B_100%)] bg-clip-text text-transparent text-5xl sm:text-6xl font-header">80%</p>
                                 <p className="font-inter text-[#C6C6C6] text-sm md:text-lg">Face Detection</p>
                             </div>
                         </div>
