@@ -115,7 +115,7 @@ export default function Navbar(){
                 </Link>
             </div>
 
-            {/* Mobile Hamburger Button */}
+            {/* tombol hamburger buat hp */}
             <button 
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
                 className="
@@ -133,7 +133,7 @@ export default function Navbar(){
                 <HamburgerIcon open={isMobileMenuOpen} />
             </button>
 
-            {/* Mobile Overlay Backdrop */}
+            {/* overlay background item pas menu hp kebuka */}
             <div
                 className={`
                     fixed inset-0 z-[55] bg-black/60 backdrop-blur-sm
@@ -143,7 +143,7 @@ export default function Navbar(){
                 onClick={() => setIsMobileMenuOpen(false)}
             />
 
-            {/* Mobile Slide-in Menu */}
+            {/* menu sidebar hp yg bisa geser masuk */}
             <div 
                 className={`
                     md:hidden fixed top-0 right-0 z-[58] h-full w-72
