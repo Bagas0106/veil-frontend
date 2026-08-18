@@ -272,6 +272,7 @@ export default function Upload({ preview, setPreview, isProcessing, setIsProcess
                         )}
                         
                         <div 
+                            id="image-preview-container"
                             ref={containerRef}
                             className="relative inline-block max-w-full max-h-[65vh] touch-none"
                             onPointerDown={handlePointerDown}
