@@ -25,7 +25,7 @@ export default function Page() {
           
           <div className="relative border-l border-zinc-800 ml-4 md:ml-5 space-y-16 pb-8">
             
-            {/* Step 1 */}
+            {/* step 1 */}
             <div className="relative pl-8 md:pl-12">
               <div className="absolute -left-[17px] top-0 flex h-8 w-8 items-center justify-center rounded-full border border-zinc-800 bg-zinc-950 text-sm font-medium text-zinc-300 ring-8 ring-black">
                 1
@@ -59,7 +59,7 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Step 2 */}
+            {/* step 2 */}
             <div className="relative pl-8 md:pl-12">
               <div className="absolute -left-[17px] top-0 flex h-8 w-8 items-center justify-center rounded-full border border-zinc-800 bg-zinc-950 text-sm font-medium text-zinc-300 ring-8 ring-black">
                 2
@@ -74,7 +74,7 @@ export default function Page() {
               </ul>
             </div>
 
-            {/* Step 3 */}
+            {/* step 3 */}
             <div className="relative pl-8 md:pl-12">
               <div className="absolute -left-[17px] top-0 flex h-8 w-8 items-center justify-center rounded-full border border-zinc-800 bg-zinc-950 text-sm font-medium text-zinc-300 ring-8 ring-black">
                 3
@@ -95,7 +95,7 @@ py run.py`}
               </p>
             </div>
 
-            {/* Step 4 */}
+            {/* step 4 */}
             <div className="relative pl-8 md:pl-12">
               <div className="absolute -left-[17px] top-0 flex h-8 w-8 items-center justify-center rounded-full border border-zinc-800 bg-zinc-950 text-sm font-medium text-zinc-300 ring-8 ring-black">
                 4

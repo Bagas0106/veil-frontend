@@ -19,7 +19,7 @@ export default function Page() {
       </p>
 
       <div className="space-y-16 mt-16">
-        {/* NEW SECTION 1: How the AI in this project was trained */}
+        {/* bagian 1 cara ai dilatih */}
         <section id="bagaimana-ai-dilatih">
           <h2 className="text-xl md:text-2xl font-medium text-zinc-100 mb-4 scroll-mt-28">
             Bagaimana AI Dilatih
@@ -65,7 +65,7 @@ model.train(
           />
         </section>
 
-        {/* SECTION 2: How to add a new model (Steps) */}
+        {/* bagian 2 cara nambah model baru */}
         <section id="panduan-ekspor">
           <h2 className="text-xl md:text-2xl font-medium text-zinc-100 mb-8 scroll-mt-28">
             Melatih & Menambahkan Model Baru
@@ -76,7 +76,7 @@ model.train(
           
           <div className="relative border-l border-zinc-800 ml-4 md:ml-5 space-y-16 pb-8">
             
-            {/* Step 1 */}
+            {/* step 1 */}
             <div className="relative pl-8 md:pl-12">
               <div className="absolute -left-[17px] top-0 flex h-8 w-8 items-center justify-center rounded-full border border-zinc-800 bg-zinc-950 text-sm font-medium text-zinc-300 ring-8 ring-black">
                 1
@@ -93,7 +93,7 @@ model.train(
               </div>
             </div>
 
-            {/* Step 2 */}
+            {/* step 2 */}
             <div className="relative pl-8 md:pl-12">
               <div className="absolute -left-[17px] top-0 flex h-8 w-8 items-center justify-center rounded-full border border-zinc-800 bg-zinc-950 text-sm font-medium text-zinc-300 ring-8 ring-black">
                 2
@@ -112,7 +112,7 @@ results[0].show() # menampilkan hasil deteksi`}
               />
             </div>
 
-            {/* Step 3 */}
+            {/* step 3 */}
             <div className="relative pl-8 md:pl-12">
               <div className="absolute -left-[17px] top-0 flex h-8 w-8 items-center justify-center rounded-full border border-zinc-800 bg-zinc-950 text-sm font-medium text-zinc-300 ring-8 ring-black">
                 3
@@ -147,7 +147,7 @@ def detect(self, img: np.ndarray) -> List[RedactedRegion]:
               </div>
             </div>
 
-            {/* Step 4 */}
+            {/* step 4 */}
             <div className="relative pl-8 md:pl-12">
               <div className="absolute -left-[17px] top-0 flex h-8 w-8 items-center justify-center rounded-full border border-zinc-800 bg-zinc-950 text-sm font-medium text-zinc-300 ring-8 ring-black">
                 4
@@ -158,10 +158,10 @@ def detect(self, img: np.ndarray) -> List[RedactedRegion]:
               </p>
               <CodeBlock 
                 filename="components/ui/Upload page/setting.tsx"
-                code={`// Tambahkan tipe kategori baru ke dalam array default
+                code={`// tambahin tipe kategori baru ke array default
 const baseCategories = ["wajah", "plat_nomor", "kartu_identitas"];
 
-// Sistem akan merender otomatis dari array json backend
+// sistem bakal render otomatis dari array json backend
 const detectedCategories = Array.from(new Set(regions.map(r => r.type)));`}
                 language="typescript"
               />

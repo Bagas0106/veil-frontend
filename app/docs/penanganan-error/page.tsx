@@ -40,7 +40,7 @@ export default function Page() {
           </p>
           <CodeBlock 
             filename="components/ui/Upload page/upload.tsx"
-            code={`// Validasi tipe dan ukuran file sebelum memanggil fungsi API
+            code={`// validasi tipe sama ukuran file sblm panggil api
 const processFile = (file: File) => {
   if (!file.type.startsWith('image/')) {
     alert("Format tidak valid! Harap unggah gambar.");
@@ -50,7 +50,7 @@ const processFile = (file: File) => {
     alert("File gambar Anda kosong!");
     return;
   }
-  // Lanjutkan proses unggah
+  // lanjut upload
   const imageUrl = URL.createObjectURL(file);
   setPreview(imageUrl);
   processImageApi(file);
@@ -87,11 +87,11 @@ const processFile = (file: File) => {
           </p>
           <CodeBlock 
             filename="veil-backend/app/api/extract.py"
-            code={`# Mengompresi resolusi gambar secara agresif sebelum proses inferensi YOLO
+            code={`# kompres resolusi gambar sebelum masuk yolo
 MAX_DIMENSION = 1920
 
 if img.shape[0] > MAX_DIMENSION or img.shape[1] > MAX_DIMENSION:
-    # Memaksa skala turun (downscale) gambar beresolusi raksasa
+    # paksa downscale gambar resolusi gede
     scale = MAX_DIMENSION / max(img.shape[0], img.shape[1])
     new_size = (int(img.shape[1] * scale), int(img.shape[0] * scale))
     img = cv2.resize(img, new_size, interpolation=cv2.INTER_AREA)`}
@@ -116,7 +116,7 @@ if img.shape[0] > MAX_DIMENSION or img.shape[1] > MAX_DIMENSION:
           </p>
           <CodeBlock 
             filename="components/ui/Upload page/upload.tsx"
-            code={`// Melakukan percobaan ulang (polling) otomatis ketika API merespons dengan kode 503
+            code={`// auto polling klo api ngerespon 503
 const processImageApi = async (file: File, retries = 3) => {
   setIsProcessing(true);
   setRegions([]);
@@ -140,7 +140,7 @@ const processImageApi = async (file: File, retries = 3) => {
       if (!res.ok) throw new Error("API Error");
       
       const data = await res.json();
-      // ... Lanjutkan proses pemetaan JSON data ...
+      // lanjut map json data
       return;
     }
   } catch (error) {

@@ -185,14 +185,14 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
         }
     };
 
-    // Default categories if nothing is detected or no image
+    // default kategori klo ga nemu apa apa ato gada gambar
     const baseCategories = ["wajah", "plat_nomor", "Barcode/qr"];
     const detectedCategories = Array.from(new Set(regions.map(r => r.type)));
     const categories = preview ? (detectedCategories.length > 0 ? detectedCategories : baseCategories) : baseCategories;
 
     return(
         <div className="w-full lg:w-[420px] max-h-[80vh] bg-zinc-950 border border-zinc-800 p-6 flex flex-col gap-5 rounded-xl shadow-2xl font-mono overflow-hidden">
-            {/* Header */}
+            {/* header */}
             <div className="flex justify-between items-end border-b border-zinc-800 pb-4 shrink-0">
                 <h1 className="text-sm font-semibold tracking-widest text-zinc-300">LOG DETEKSI</h1>
                 <div className="border border-zinc-700 bg-zinc-900 text-zinc-300 text-xs px-2 py-0.5 rounded-sm">
@@ -200,7 +200,7 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
                 </div>
             </div>
 
-            {/* Global Actions - Moved to Top */}
+            {/* action global dipindah ke atas */}
             <div className={`shrink-0 space-y-3 pb-2 transition-opacity ${!preview ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
                 <div className="flex flex-col bg-zinc-900/50 p-3 rounded-lg border border-zinc-800 gap-3">
                     <div className="flex items-center justify-between">
@@ -259,7 +259,7 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
                 </div>
             </div>
 
-            {/* Content List - Scrollable */}
+            {/* list konten bisa di scroll */}
             <div className="flex-1 space-y-3 overflow-y-auto custom-scrollbar pr-2 min-h-[150px]">
                 {isProcessing ? (
                     <div className="flex flex-col items-center justify-center py-20 gap-4 opacity-80">
@@ -275,7 +275,7 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
                         
                         return (
                             <div key={cat} className="space-y-2">
-                                {/* Category Row */}
+                                {/* baris kategori */}
                                 <div 
                                     onClick={() => isDetected && toggleCatExpand(cat)}
                                     className={`flex items-center justify-between p-3 rounded-lg border transition-all ${
@@ -302,7 +302,7 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
                                     </div>
                                 </div>
 
-                                {/* Items Row (Expanded) */}
+                                {/* baris item klo diexpand */}
                                 {isExpanded && isDetected && (
                                     <div className="pl-4 pr-1 space-y-2 pb-2">
                                         {catRegions.map((r, idx) => {
@@ -332,7 +332,7 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
                                                         </div>
                                                     </div>
 
-                                                    {/* Mode Sensor Panel */}
+                                                    {/* panel mode sensor */}
                                                     {isItemExpanded && (
                                                         <div className="p-4 bg-zinc-900/80 border-t border-zinc-800 space-y-4">
                                                             <p className="text-xs font-semibold tracking-widest text-zinc-400">MODE SENSOR</p>
@@ -409,7 +409,7 @@ export default function Setting({ preview, isProcessing, regions, setRegions, gl
                 )}
             </div>
 
-            {/* Bottom Actions */}
+            {/* action bawah */}
             {preview && (
                 <div className="pt-2 shrink-0">
                     <DropdownMenu>
