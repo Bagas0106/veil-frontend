@@ -54,7 +54,6 @@ export default function Upload({ preview, setPreview, isProcessing, setIsProcess
             if (!res.ok) throw new Error("API Error");
             const data = await res.json();
             
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const formattedRegions = (data.regions || []).map((r: any) => ({
                 ...r,
                 id: Math.random().toString(36).substring(7),
@@ -111,7 +110,7 @@ export default function Upload({ preview, setPreview, isProcessing, setIsProcess
     const handlePointerDown = (e: React.PointerEvent) => {
         if (!containerRef.current || !imgRef.current) return;
         
-        // Prevent drawing if we are clicking on an existing region
+        // cegah gambar region baru kalo user klik region yg udah ada
         if ((e.target as HTMLElement).closest('.region-overlay')) return;
 
         e.preventDefault();
@@ -323,7 +322,7 @@ export default function Upload({ preview, setPreview, isProcessing, setIsProcess
                                                     <img src={imageToUse} className="w-full h-full object-cover grayscale opacity-90 pointer-events-none" alt="custom" />
                                                 )}
                                                 
-                                                {/* Resize Handles */}
+                                                {/* handle buat resize */}
                                                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                                                     <div className="absolute top-0 left-0 w-3 h-3 bg-[#EBB2FF] pointer-events-auto cursor-nwse-resize rounded-br-sm" onPointerDown={(e) => handleRegionInteractionStart(e, r.id, 'resize', 'top-left')} />
                                                     <div className="absolute top-0 right-0 w-3 h-3 bg-[#EBB2FF] pointer-events-auto cursor-nesw-resize rounded-bl-sm" onPointerDown={(e) => handleRegionInteractionStart(e, r.id, 'resize', 'top-right')} />

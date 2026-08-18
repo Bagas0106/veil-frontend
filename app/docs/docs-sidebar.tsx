@@ -104,13 +104,12 @@ export function DocsSidebar() {
   const [activeSubId, setActiveSubId] = useState<string>("");
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Close mobile sidebar on route change
+  // tutup sidebar hp tiap pindah halaman
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMobileOpen(false);
   }, [pathname]);
 
-  // Lock body scroll when mobile sidebar is open
+  // lock scroll body biar ga bisa scroll pas sidebar hp kebuka
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = 'hidden';
@@ -122,7 +121,7 @@ export function DocsSidebar() {
     };
   }, [mobileOpen]);
 
-  // Close on Escape key
+  // tutup pake tombol escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setMobileOpen(false);
@@ -133,7 +132,7 @@ export function DocsSidebar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Intentionally left empty as previous implementation had unused variables
+      // dikosongin aja sengaja soalnya kode sblmnya ada variabel yg ga kepake
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -159,7 +158,7 @@ export function DocsSidebar() {
 
   const closeMobile = useCallback(() => setMobileOpen(false), []);
 
-  // Listen for custom event from navbar to open sidebar
+  // dengerin event custom dari navbar buat ngebuka sidebar
   useEffect(() => {
     const handleOpenDocsSidebar = () => setMobileOpen(true);
     window.addEventListener('openDocsSidebar', handleOpenDocsSidebar);
@@ -168,7 +167,7 @@ export function DocsSidebar() {
 
   return (
     <>
-      {/* ── Mobile overlay backdrop ── */}
+      {/*  overlay backdrop buat hp  */}
       <div
         className={`
           fixed inset-0 z-[55] bg-black/60 backdrop-blur-sm
@@ -180,7 +179,7 @@ export function DocsSidebar() {
         aria-hidden="true"
       />
 
-      {/* ── Mobile slide-in sidebar ── */}
+      {/*  sidebar hp yg bisa geser masuk  */}
       <aside
         className={`
           fixed top-0 left-0 z-[58] h-full w-72
@@ -201,7 +200,7 @@ export function DocsSidebar() {
         />
       </aside>
 
-      {/* ── Desktop sticky sidebar (unchanged) ── */}
+      {/*  sidebar sticky buat desktop  */}
       <aside className="w-full md:w-72 flex-col shrink-0 hidden md:flex sticky top-28 z-40 max-h-[calc(100vh-8rem)] overflow-y-auto pr-4 scrollbar-hide">
         <SidebarContent
           pathname={pathname}

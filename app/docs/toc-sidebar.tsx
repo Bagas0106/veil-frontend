@@ -17,11 +17,11 @@ export function TocSidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    // 1. Dapatkan semua elemen heading h2 dan h3 di dalam main
+    // 1. ambil semua tag h2 sama h3 dalem main
     const headingElements = Array.from(document.querySelectorAll("main h2, main h3"));
     
     const items: TocItem[] = headingElements.map((el) => {
-      // Pastikan elemen memiliki ID
+      // pastiin elemennya ada ID-nya
       if (!el.id) {
         el.id = el.textContent?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || "";
       }
@@ -32,18 +32,17 @@ export function TocSidebar() {
       };
     });
     
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHeadings(items);
 
-    // 2. Fungsi untuk mendeteksi scroll dan highlight menu yang aktif
+    // 2. fungsi buat deteksi scroll trus highlight menu yg lg aktif
     const handleScroll = () => {
-      // Deteksi apakah user sudah mentok scroll sampai bawah (toleransi 20px)
+      // cek kalo user udh scroll mentok bawah (kasih toleransi 20px)
       const isBottom = 
         window.innerHeight + Math.round(window.scrollY) >= 
         document.documentElement.scrollHeight - 20;
 
       if (isBottom && headingElements.length > 0) {
-        // Jika sudah mentok bawah, paksa aktifkan elemen terakhir
+        // kalo udh mentok bawah, paksa set aktif ke elemen yg terakhir
         setActiveId(headingElements[headingElements.length - 1].id);
         return;
       }
@@ -52,7 +51,7 @@ export function TocSidebar() {
       
       for (const el of headingElements) {
         const rect = el.getBoundingClientRect();
-        // 120px dari atas adalah batas deteksi
+        // bates deteksinya 120px dari atas
         if (rect.top <= 120) {
           currentActiveId = el.id;
         }
@@ -61,23 +60,23 @@ export function TocSidebar() {
       if (currentActiveId) {
         setActiveId(currentActiveId);
       } else if (headingElements.length > 0) {
-        // Default ke item pertama jika di paling atas
+        // kalo lg di paling atas, set default ke item pertama
         setActiveId(headingElements[0].id);
       }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    // Jalankan sekali saat pertama load
+    // run sekali pas baru load
     handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [pathname]); // Refresh setiap kali pindah halaman
+  }, [pathname]); // refresh lg tiap ganti halaman
 
   if (headings.length === 0) return null;
 
   return (
     <>
-      {/* ── Mobile "On this page" Dropdown ── */}
+      {/*  mobile "On this page" dropdown */}
       <div className="relative lg:hidden">
         <button 
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -114,7 +113,7 @@ export function TocSidebar() {
         )}
       </div>
 
-      {/* ── Desktop TOC Sidebar ── */}
+      {/* desktop TOC sidebar */}
       <aside className="w-56 shrink-0 hidden lg:block sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto">
         <h4 className="mb-4 text-sm font-medium text-zinc-300">On this page</h4>
         <div className="border-l border-zinc-800 flex flex-col relative">
