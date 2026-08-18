@@ -61,7 +61,7 @@ export default function Navbar(){
     ]
     return(
         <nav className="flex">
-            {/* Logo */}
+            {/* logo */}
             <div className={`fixed left-6 md:left-10 top-3 z-[60] flex items-center gap-1.5 md:gap-2 ${!(isDocs || isBlur) ? 'mix-blend-difference text-white' : 'text-white'}`}>
                 <Link href="/">
                     <h1 className="font-bold text-2xl">Veil</h1>

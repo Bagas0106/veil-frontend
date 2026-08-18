@@ -22,7 +22,7 @@ export default function Explanation(){
             </h1>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
-                {/* Left Card */}
+                {/* card kiri */}
                 <div className="flex flex-col border p-6 sm:p-8 rounded-xl border-[#2D2D2D] relative overflow-hidden bg-black min-h-[450px]">
                     <div className="flex-1 flex justify-center items-center py-6">
                         <img src="database.svg" alt="Database" className="w-[60%] max-w-[260px] opacity-60 pointer-events-none" />
@@ -35,7 +35,7 @@ export default function Explanation(){
                     </div>
                 </div>
 
-                {/* Right Cards */}
+                {/* card kanan */}
                 <div className="flex flex-col gap-4">
                     {ex.map((exp) => (
                         <div key={exp.id} className="flex-1 flex flex-col p-6 sm:p-8 border border-[#2D2D2D] rounded-xl relative overflow-hidden bg-black min-h-[220px]">
